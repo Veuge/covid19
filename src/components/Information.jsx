@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 
 import Line from './Line';
-import Dropdown from "./Dropdown";
+import Dropdown from "./fields/dropdown/Dropdown";
+import Checkbox from "./fields/checkbox/Checkbox"
 import { getData, getDataLabels, getCountries } from "../helpers/dataHelper";
 import { getHistoric } from "../api/getHistoric";
 
@@ -11,7 +12,8 @@ class Information extends Component {
     historic: null,
     countries: [],
     currentCountryId: "",
-    currentHistoric: null
+    currentHistoric: null,
+    checked: false
   };
 
   componentDidMount() {
@@ -70,6 +72,11 @@ class Information extends Component {
   render() {
     return (
       <div>
+        <Checkbox
+          label="A checkbox"
+          checked={this.state.checked}
+          onCheck={() => this.setState(prev => ({ checked: !prev.checked }))}
+        />
         {this.renderBody()}
       </div>
     )
