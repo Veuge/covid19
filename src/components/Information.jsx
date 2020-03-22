@@ -1,64 +1,76 @@
 import React, { Component } from "react";
-import axios from "axios";
 
 import Line from './Line';
+import Dropdown from "./Dropdown";
 import { getData, getDataLabels, getCountries } from "../helpers/dataHelper";
+import { getHistoric } from "../api/getHistoric";
 
 class Information extends Component {
   state = {
     loading: true,
-    historic: {},
-    countries: {},
-    currentCountry: ""
+    historic: null,
+    countries: [],
+    currentCountryId: "",
+    currentHistoric: null
   };
-  
+
   componentDidMount() {
-    axios.get("https://corona.lmao.ninja/historical")
+    getHistoric()
       .then(response => {
-        const countries = getCountries(response.data);
-        console.log({ data: response.data, countries });
         this.setState({
-          historic: response.data.map((c, index) => ({ ...c, id: `${index}` })),
-          countries: countries,
-          loading: false
+          loading: false,
+          historic: response.data,
+          countries: getCountries(response.data)
         })
       })
   }
 
   onSelectCountry = e => {
-    const currentCountry = e.target.value;
+    const { historic } = this.state;
+
+    const currentCountryId = e.target.value;
+    const currentHistoric = historic.find(h => h.id === e.target.value);
     this.setState({
-      currentCountry
-    })
+      currentCountryId,
+      currentHistoric
+    });
   }
-  
+
+  renderLoader = () => (
+    <p className="Text">Loading...</p>
+  );
+
+  renderContent = () => {
+    const { currentCountryId, countries, currentHistoric } = this.state;
+    return (
+      <>
+        <Dropdown
+          value={currentCountryId}
+          onChange={this.onSelectCountry}
+          options={countries}
+          labelField={"name"}
+          valueField={"id"}
+        />
+        {!!currentHistoric && (
+          <Line
+            country={currentHistoric.name}
+            data={getData(currentHistoric.timeline.cases)}
+            labels={getDataLabels(currentHistoric.timeline.cases)}
+          />
+        )}
+      </>
+    );
+  }
+
+  renderBody = () => {
+    const { loading } = this.state;
+    return loading ? this.renderLoader() : this.renderContent()
+  }
+
   render() {
-    const { loading, historic } = this.state;
     return (
       <div>
-        {loading ? (
-          <p className="Text">Loading...</p>
-        ) : (
-          <>
-            <select
-              name="countries"
-              onChange={this.onSelectCountry}
-              value={this.state.currentCountry}
-            >
-              <option value="">--Please choose an option--</option>
-              {this.state.countries.map(country => (
-                <option value={country.id}>
-                  {`${country.name} - ${!!country.province ? country.province : ""}`}
-                </option>
-              ))}
-            </select>
-            <p className="Text">{historic.country}</p>
-            {/* <Line
-              data={getData(historic.timeline.cases)}
-              labels={getDataLabels(historic.timeline.cases)}
-            /> */}
-          </>
-        )}
+        {this.renderBody()}
       </div>
     )
   }

@@ -14,7 +14,7 @@ const LineExample = props => {
     },
     datasets: [
       {
-        label: 'Test',
+        label: props.country,
         fill: false,
         lineTension: 0.1,
         backgroundColor: 'rgba(75,192,192,0.4)',
@@ -39,7 +39,7 @@ const LineExample = props => {
 
   return (
     <div>
-      <h2 className="Text">Line Example</h2>
+      <h2 className="Text">{props.country}</h2>
       <Line
         data={data}
         options={{
