@@ -6,11 +6,10 @@
   align-items: center;
   flex: 1;
   height: 100vh;
-  background-color: #34495e;
 }
 
 .Text {
-  color: #ecf0f1;
+  color: #34495e;
 }
 
 .Title {
