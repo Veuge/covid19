@@ -2,8 +2,7 @@ import React, { Component } from "react";
 
 import Line from './Line';
 import Dropdown from "./fields/dropdown/Dropdown";
-import Checkbox from "./fields/checkbox/Checkbox"
-import { getData, getDataLabels, getCountries } from "../helpers/dataHelper";
+import { getDataLabels, getCountries } from "../helpers/dataHelper";
 import { getHistoric } from "../api/getHistoric";
 
 class Information extends Component {
@@ -28,7 +27,6 @@ class Information extends Component {
   }
 
   onSelectCountry = e => {
-    debugger;
     const { historic } = this.state;
 
     const currentCountryId = e.id;
@@ -52,24 +50,31 @@ class Information extends Component {
     });
   }
 
+  onClear = () => {
+    this.setState({
+      currentCountryIds: [],
+      currentHistorics: []
+    })
+  };
+
   renderLoader = () => (
     <p className="Text">Loading...</p>
   );
 
   renderContent = () => {
-    const { currentCountryIds, countries, currentHistoric } = this.state;
+    const { currentCountryIds, countries, currentHistorics } = this.state;
     return (
       <>
         <Dropdown
           options={countries}
           selectedValues={currentCountryIds}
           onSelectOptions={this.onSelectCountry}
+          onClearAll={this.onClear}
         />
-        {!!currentHistoric && (
+        {!!currentHistorics.length && (
           <Line
-            country={currentHistoric.name}
-            data={getData(currentHistoric.timeline.cases)}
-            labels={getDataLabels(currentHistoric.timeline.cases)}
+            labels={getDataLabels(currentHistorics[0].timeline.cases)}
+            selectedHistorics={currentHistorics}
           />
         )}
       </>
@@ -82,16 +87,7 @@ class Information extends Component {
   }
 
   render() {
-    return (
-      <>
-        <Checkbox
-          label="A checkbox"
-          checked={this.state.checked}
-          onCheck={() => this.setState(prev => ({ checked: !prev.checked }))}
-        />
-        {this.renderBody()}
-      </>
-    )
+    return this.renderBody();
   }
 }
 

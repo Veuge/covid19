@@ -6,7 +6,6 @@ import Checkbox from "../checkbox/Checkbox";
 import styles from "./dropdown.module.scss";
 
 const Dropdown = props => {
-  console.log("Dropdown", props);
   const [ isOpen, open ] = useState(false);
   const [ searchTerm, search ] = useState("");
   const [ filteredOptions, onFilter ] = useState(props.options);
@@ -19,7 +18,7 @@ const Dropdown = props => {
     const searchVal = e.target.value;
     const filtered = searchVal === "" 
       ? props.options 
-      : props.options.filter(op => op.name.includes(searchVal) || (!!op.province && op.province.includes(searchVal)));
+      : props.options.filter(op => op.name.toLowerCase().includes(searchVal.toLowerCase()) || (!!op.province && op.province.toLowerCase().includes(searchVal.toLowerCase())));
 
     // update state
     search(searchVal);
@@ -47,7 +46,13 @@ const Dropdown = props => {
   const renderOptionsBox = () => (
     isOpen && (
       <div className={styles.box}>
-        <input className={styles.searchInput} type="text" onChange={onSearch} value={searchTerm} />
+        <input
+          className={styles.searchInput}
+          type="text"
+          onChange={onSearch}
+          value={searchTerm}
+        />
+        <button onClick={props.onClearAll}>Borrar seleccionados</button>
         <div className={styles.optionsBox}>
           {filteredOptions.map(op => (
             <div className={styles.checkbox} key={`check-${op.id}`}>
@@ -74,7 +79,8 @@ const Dropdown = props => {
 Dropdown.propTypes = {
   options: PropTypes.array.isRequired,
   selectedValues: PropTypes.array.isRequired,
-  onSelectOptions: PropTypes.func.isRequired
+  onSelectOptions: PropTypes.func.isRequired,
+  onClearAll: PropTypes.func
 }
 
 export default Dropdown;

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { capitalize } from "../helpers/dataHelper";
 
 const URL = "https://corona.lmao.ninja/historical";
 
@@ -7,8 +8,8 @@ const getHistoric = () => axios.get(URL, {
     const parsedData = JSON.parse(data);
     return parsedData.map((country, i) => ({
       id: `country-${i}`,
-      name: country.country,
-      province: !!country.province ? country.province : undefined,
+      name: capitalize(country.country),
+      province: !!country.province ? capitalize(country.province) : undefined,
       timeline: country.timeline
     })).sort((a, b) => {
       const nameA = a.name.toUpperCase();
