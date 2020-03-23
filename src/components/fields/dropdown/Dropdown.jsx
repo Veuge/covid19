@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
+import React, { useState, useRef } from "react";
+import { MdKeyboardArrowDown, MdKeyboardArrowUp, MdClear } from "react-icons/md";
 import PropTypes from "prop-types";
 
 import Checkbox from "../checkbox/Checkbox";
@@ -9,6 +9,7 @@ const Dropdown = props => {
   const [ isOpen, open ] = useState(false);
   const [ searchTerm, search ] = useState("");
   const [ filteredOptions, onFilter ] = useState(props.options);
+  const triggerRef = useRef();
 
   const toggleDropdown = newIsOpen => {
     open(newIsOpen);
@@ -33,7 +34,7 @@ const Dropdown = props => {
   }
 
   const renderTrigger = () => (
-    <div className={styles.triggerBox} onClick={() => toggleDropdown(!isOpen)}>
+    <div ref={triggerRef} className={styles.triggerBox} onClick={() => toggleDropdown(!isOpen)}>
       <p className={styles.selectedValues}>{getSelectedValues().join(", ")}</p>
       {isOpen ? (
         <MdKeyboardArrowUp color="blue" />
@@ -45,7 +46,7 @@ const Dropdown = props => {
 
   const renderOptionsBox = () => (
     isOpen && (
-      <div className={styles.box}>
+      <div className={styles.box} style={{ top: triggerRef.current.getBoundingClientRect().y + triggerRef.current.getBoundingClientRect().height + 5, width: triggerRef.current.getBoundingClientRect().width }}>
         <div className={styles.dropdownControls}>
           <input
             className={styles.searchInput}
@@ -59,7 +60,9 @@ const Dropdown = props => {
             onClick={props.onClearAll}>
               Borrar selección
           </button>
-          <button onClick={() => toggleDropdown(false)}>Terminar</button>
+          <button onClick={() => toggleDropdown(false)}>
+            <MdClear />
+          </button>
         </div>
         <div className={styles.optionsBox}>
           {filteredOptions.map(op => (

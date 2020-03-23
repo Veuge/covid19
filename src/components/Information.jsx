@@ -64,20 +64,21 @@ class Information extends Component {
   renderContent = () => {
     const { currentCountryIds, countries, currentHistorics } = this.state;
     return (
-      <>
-        <Dropdown
-          options={countries}
-          selectedValues={currentCountryIds}
-          onSelectOptions={this.onSelectCountry}
-          onClearAll={this.onClear}
-        />
-        {!!currentHistorics.length && (
-          <Line
-            labels={getDataLabels(currentHistorics[0].timeline.cases)}
-            selectedHistorics={currentHistorics}
+        <div className="container">
+          <Dropdown
+            options={countries}
+            selectedValues={currentCountryIds}
+            onSelectOptions={this.onSelectCountry}
+            onClearAll={this.onClear}
           />
-        )}
-      </>
+          {!!currentHistorics.length && (
+            <Line
+              labels={getDataLabels(currentHistorics[0].timeline.cases)}
+              selectedHistorics={currentHistorics}
+              viewport={this.props.viewport}
+            />
+          )}
+        </div>
     );
   }
 

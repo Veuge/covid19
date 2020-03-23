@@ -1,0 +1,43 @@
+.App {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  align-items: center;
+  flex: 1;
+  height: 100vh;
+  min-width: 90vw;
+
+}
+.infoContainer {
+  flex: 1;
+  padding: 20px;
+}
+
+// Extra small devices
+@media (max-width: 575px) {
+
+}
+
+// Small devices
+@media (min-width: 576px) and (max-width: 767px) {
+
+}
+
+// Medium devices
+@media (min-width: 768px) and (max-width: 991px) {
+
+}
+
+// Large devices
+@media (min-width: 992px) and (max-width: 1199px) {
+  .infoContainer {
+    max-width: 70%;
+    align-self: center;
+  }
+}
+
+// Extra-large devices
+@media (min-width: 1200px) {
+
+}
