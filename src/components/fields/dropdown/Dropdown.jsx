@@ -46,14 +46,20 @@ const Dropdown = props => {
   const renderOptionsBox = () => (
     isOpen && (
       <div className={styles.box}>
-        <input
-          className={styles.searchInput}
-          type="text"
-          onChange={onSearch}
-          value={searchTerm}
-        />
-        <button onClick={props.onClearAll}>Borrar seleccionados</button>
-        <button onClick={() => toggleDropdown(false)}>Terminar</button>
+        <div className={styles.dropdownControls}>
+          <input
+            className={styles.searchInput}
+            type="text"
+            onChange={onSearch}
+            value={searchTerm}
+          />
+          <button
+            style={{ marginRight: 5 }}
+            onClick={props.onClearAll}>
+              Borrar selección
+          </button>
+          <button onClick={() => toggleDropdown(false)}>Terminar</button>
+        </div>
         <div className={styles.optionsBox}>
           {filteredOptions.map(op => (
             <div className={styles.checkbox} key={`check-${op.id}`}>

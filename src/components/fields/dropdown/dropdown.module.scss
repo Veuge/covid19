@@ -27,15 +27,33 @@
     padding: 8px;
     width: 100%;
 
-    .searchInput {
-      width: 100%;
-      height: 25px;
-      border: 1px solid lightsteelblue;
-      border-radius: 4px;
-      padding: 0 8px;
-      box-sizing: border-box;
-      margin-bottom: 8px;
-      font-size: 12px;
+    .dropdownControls {
+      display: flex;
+
+      .searchInput {
+        flex: 1;
+        height: 25px;
+        border: 1px solid lightsteelblue;
+        border-radius: 4px;
+        padding: 0 8px;
+        box-sizing: border-box;
+        margin-bottom: 8px;
+        margin-right: 5px;
+        font-size: 12px;
+      }
+
+      button {
+        height: 25px;
+        background: white;
+        color: darkblue;
+        border: 1px solid blue;
+        border-radius: 4px;
+        padding: 0 5px;
+        font: inherit;
+        cursor: pointer;
+        outline: inherit;
+        font-size: 12px;
+      }
     }
 
     .optionsBox {
