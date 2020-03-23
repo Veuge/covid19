@@ -52,6 +52,7 @@ const Dropdown = props => {
             type="text"
             onChange={onSearch}
             value={searchTerm}
+            placeholder="Buscar país"
           />
           <button
             style={{ marginRight: 5 }}

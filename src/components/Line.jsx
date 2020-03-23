@@ -3,7 +3,7 @@ import { Line } from 'react-chartjs-2';
 import { chartColors } from "../helpers/chartColorsHelper";
 import { getData } from '../helpers/dataHelper';
 
-const LineExample = props => {
+const LineChart = props => {
   const data = {
     labels: props.labels,
     datasets: props.selectedHistorics.map((sh, i) => ({
@@ -16,7 +16,7 @@ const LineExample = props => {
   };
 
   return (
-    <div>
+    <div style={{ paddingBottom: 20 }}>
       <h2 className="Text">{props.country}</h2>
       <Line
         data={data}
@@ -28,4 +28,4 @@ const LineExample = props => {
   );
 }
 
-export default LineExample;
+export default LineChart;

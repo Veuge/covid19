@@ -6,7 +6,7 @@ import Information from "./components/Information";
 function App() {
   return (
     <div className="App">
-      <h1 className="Title Text">COVID 19 Information</h1>
+      <h1 className="Title Text">Visualizador de COVID 19</h1>
       <Information />
     </div>
   );

@@ -58,7 +58,7 @@ class Information extends Component {
   };
 
   renderLoader = () => (
-    <p className="Text">Loading...</p>
+    <p className="Text">Cargando...</p>
   );
 
   renderContent = () => {
