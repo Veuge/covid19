@@ -8,7 +8,7 @@ const getHistoric = () => axios.get(URL, {
     const parsedData = JSON.parse(data);
     return parsedData.map((country, i) => ({
       id: `country-${i}`,
-      name: capitalize(country.country),
+      name: capitalize(country.country) + `${!!country.province ? ` - ${capitalize(country.province)}` : ""}`,
       province: !!country.province ? capitalize(country.province) : undefined,
       timeline: country.timeline
     })).sort((a, b) => {

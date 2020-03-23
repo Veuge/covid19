@@ -5,6 +5,10 @@
   margin: 8px 0;
   cursor: pointer;
 
+  &.disabled {
+    opacity: 0.5;
+  }
+
   .checkbox {
     display: flex;
     align-items: center;

@@ -10,8 +10,8 @@ const Dropdown = props => {
   const [ searchTerm, search ] = useState("");
   const [ filteredOptions, onFilter ] = useState(props.options);
 
-  const openDropdown = () => {
-    open(!isOpen);
+  const toggleDropdown = newIsOpen => {
+    open(newIsOpen);
   }
 
   const onSearch = e => {
@@ -28,12 +28,12 @@ const Dropdown = props => {
   const getSelectedValues = () => {
     return props.selectedValues.map(sv => {
       const selectedCountry = props.options.find(o => o.id === sv);
-      return !!selectedCountry ? `${selectedCountry.name} ${selectedCountry.province || ""}` : "";
+      return !!selectedCountry ? selectedCountry.name : "";
     });
   }
 
   const renderTrigger = () => (
-    <div className={styles.triggerBox} onClick={openDropdown}>
+    <div className={styles.triggerBox} onClick={() => toggleDropdown(!isOpen)}>
       <p className={styles.selectedValues}>{getSelectedValues().join(", ")}</p>
       {isOpen ? (
         <MdKeyboardArrowUp color="blue" />
@@ -53,13 +53,15 @@ const Dropdown = props => {
           value={searchTerm}
         />
         <button onClick={props.onClearAll}>Borrar seleccionados</button>
+        <button onClick={() => toggleDropdown(false)}>Terminar</button>
         <div className={styles.optionsBox}>
           {filteredOptions.map(op => (
             <div className={styles.checkbox} key={`check-${op.id}`}>
               <Checkbox
-                label={`${op.name} ${!!op.province ? `- ${op.province}` : ""}`}
+                label={op.name}
                 onCheck={() => props.onSelectOptions(op)}
                 checked={props.selectedValues.includes(op.id)}
+                disabled={props.selectedValues.length >= 5}
               />
             </div>
           ))}
