@@ -11,8 +11,8 @@ class Information extends Component {
     loading: true,
     historic: null,
     countries: [],
-    currentCountryId: "",
-    currentHistoric: null,
+    currentCountryIds: [],
+    currentHistorics: [],
     checked: false
   };
 
@@ -28,13 +28,27 @@ class Information extends Component {
   }
 
   onSelectCountry = e => {
+    debugger;
     const { historic } = this.state;
 
-    const currentCountryId = e.target.value;
-    const currentHistoric = historic.find(h => h.id === e.target.value);
-    this.setState({
-      currentCountryId,
-      currentHistoric
+    const currentCountryId = e.id;
+    const currentHistoric = historic.find(h => h.id === currentCountryId);
+    this.setState(prevState => {
+      const { currentCountryIds, currentHistorics } = prevState;
+      const alreadySelected = currentCountryIds.includes(currentCountryId);
+      let newIds = [], newHistorics = [];
+      if(alreadySelected) {
+        newIds = currentCountryIds.filter(cids => cids !== currentCountryId);
+        newHistorics = currentHistorics.filter(h => h.id !== currentCountryId);
+      } else {
+        newIds = [...currentCountryIds, currentCountryId];
+        newHistorics = [...currentHistorics, currentHistoric];
+      }
+
+      return {
+        currentCountryIds: newIds,
+        currentHistorics: newHistorics
+      }
     });
   }
 
@@ -43,15 +57,13 @@ class Information extends Component {
   );
 
   renderContent = () => {
-    const { currentCountryId, countries, currentHistoric } = this.state;
+    const { currentCountryIds, countries, currentHistoric } = this.state;
     return (
       <>
         <Dropdown
-          value={currentCountryId}
-          onChange={this.onSelectCountry}
           options={countries}
-          labelField={"name"}
-          valueField={"id"}
+          selectedValues={currentCountryIds}
+          onSelectOptions={this.onSelectCountry}
         />
         {!!currentHistoric && (
           <Line
@@ -71,14 +83,14 @@ class Information extends Component {
 
   render() {
     return (
-      <div>
+      <>
         <Checkbox
           label="A checkbox"
           checked={this.state.checked}
           onCheck={() => this.setState(prev => ({ checked: !prev.checked }))}
         />
         {this.renderBody()}
-      </div>
+      </>
     )
   }
 }
