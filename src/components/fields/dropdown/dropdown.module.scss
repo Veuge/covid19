@@ -8,7 +8,7 @@
     align-items: center;
     justify-content: space-between;
     min-height: 38px;
-    border: 1px solid blue;
+    border: 1px solid #3298dc;
     border-radius: 4px;
     margin-bottom: 8px;
     cursor: pointer;
@@ -22,36 +22,21 @@
   }
 
   .box {
-    border: 1px solid blue;
+    border: 1px solid #3298dc;
     border-radius: 4px;
     padding: 8px;
     width: 100%;
 
-    .dropdownControls {
+    .actionsContainer {
       display: flex;
+      margin-bottom: 8px;
 
       .searchInput {
-        flex: 1;
-        height: 25px;
         border: 1px solid lightsteelblue;
         border-radius: 4px;
         padding: 0 8px;
         box-sizing: border-box;
-        margin-bottom: 8px;
         margin-right: 5px;
-        font-size: 12px;
-      }
-
-      button {
-        height: 25px;
-        background: white;
-        color: darkblue;
-        border: 1px solid blue;
-        border-radius: 4px;
-        padding: 0 5px;
-        font: inherit;
-        cursor: pointer;
-        outline: inherit;
         font-size: 12px;
       }
     }
@@ -68,8 +53,47 @@
 
     .checkbox {
       display: flex;
-      flex-basis: 33%;
     }
   }
-
 }
+
+// Extra small devices
+@media (max-width: 575px) {
+  .actionsContainer {
+    flex-direction: column;
+  }
+  .buttonContainer {
+    margin-top: 8px;
+  }
+  .checkbox {
+    flex-basis: 50%;
+  }
+}
+
+// // Small devices
+@media (min-width: 576px) {
+  .searchInput {
+    flex: 1;
+  }
+  .checkbox {
+    flex-basis: 33%;
+  }
+}
+
+// // Medium devices
+// @media (min-width: 768px) and (max-width: 991px) {
+
+// }
+
+// // Large devices
+// @media (min-width: 992px) and (max-width: 1199px) {
+//   .infoContainer {
+//     max-width: 70%;
+//     align-self: center;
+//   }
+// }
+
+// // Extra-large devices
+// @media (min-width: 1200px) {
+
+// }

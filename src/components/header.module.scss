@@ -1,0 +1,17 @@
+.repoLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-end;
+  width: 50px;
+  height: 50px;
+  padding: 8px;
+
+  // reset defaults
+  color: inherit;
+  text-decoration: inherit;
+
+  &:hover {
+    color: white;
+  }
+}
