@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp, MdClear } from "react-icons/md";
 import PropTypes from "prop-types";
 
@@ -9,7 +9,6 @@ const Dropdown = props => {
   const [ isOpen, open ] = useState(false);
   const [ searchTerm, search ] = useState("");
   const [ filteredOptions, onFilter ] = useState(props.options);
-  const triggerRef = useRef();
 
   const toggleDropdown = newIsOpen => {
     open(newIsOpen);
@@ -34,48 +33,61 @@ const Dropdown = props => {
   }
 
   const renderTrigger = () => (
-    <div ref={triggerRef} className={styles.triggerBox} onClick={() => toggleDropdown(!isOpen)}>
+    <div tabIndex={0} className={styles.triggerBox} onClick={() => toggleDropdown(!isOpen)}>
       <p className={styles.selectedValues}>{getSelectedValues().join(", ")}</p>
       {isOpen ? (
-        <MdKeyboardArrowUp color="blue" />
+        <MdKeyboardArrowUp color="#3298dc" />
       ) : (
-        <MdKeyboardArrowDown color="blue" />
+        <MdKeyboardArrowDown color="#3298dc" />
       )}
+    </div>
+  );
+
+  const renderBoxActions = () => {
+    return (
+      <div className={styles.actionsContainer} style={{ display: "flex" }}>
+        <input
+          className={`input is-info is-small ${styles.searchInput}`}
+          type="text"
+          onChange={onSearch}
+          value={searchTerm}
+          placeholder="Buscar país"
+        />
+        <div className={styles.buttonContainer}>
+          <button
+            className="button is-small is-outlined"
+            style={{ marginRight: 5 }}
+            onClick={props.onClearAll}>
+              Borrar selección
+          </button>
+          <button className="button is-small is-outlined" onClick={() => toggleDropdown(false)}>
+            <MdClear />
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const renderOptions = () => (
+    <div className={styles.optionsBox}>
+      {filteredOptions.map(op => (
+        <div className={styles.checkbox} key={`check-${op.id}`}>
+          <Checkbox
+            label={op.name}
+            onCheck={() => props.onSelectOptions(op)}
+            checked={props.selectedValues.includes(op.id)}
+            disabled={props.selectedValues.length >= 5}
+          />
+        </div>
+      ))}
     </div>
   );
 
   const renderOptionsBox = () => (
     isOpen && (
-      <div className={styles.box} style={{ top: triggerRef.current.getBoundingClientRect().y + triggerRef.current.getBoundingClientRect().height + 5, width: triggerRef.current.getBoundingClientRect().width }}>
-        <div className={styles.dropdownControls}>
-          <input
-            className={styles.searchInput}
-            type="text"
-            onChange={onSearch}
-            value={searchTerm}
-            placeholder="Buscar país"
-          />
-          <button
-            style={{ marginRight: 5 }}
-            onClick={props.onClearAll}>
-              Borrar selección
-          </button>
-          <button onClick={() => toggleDropdown(false)}>
-            <MdClear />
-          </button>
-        </div>
-        <div className={styles.optionsBox}>
-          {filteredOptions.map(op => (
-            <div className={styles.checkbox} key={`check-${op.id}`}>
-              <Checkbox
-                label={op.name}
-                onCheck={() => props.onSelectOptions(op)}
-                checked={props.selectedValues.includes(op.id)}
-                disabled={props.selectedValues.length >= 5}
-              />
-            </div>
-          ))}
-        </div>
+      <div className={styles.box}>
+        {renderBoxActions()}
+        {renderOptions()}
       </div>
     )
   );

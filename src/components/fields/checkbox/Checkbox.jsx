@@ -16,7 +16,7 @@ const Checkbox = props => {
       onClick={!props.disabled ? props.onCheck : undefined}
     >
       <div className={styles.checkbox}>
-        {props.checked && <MdDone size={18} color="blue" />}
+        {props.checked && <MdDone size={18} color="#3298dc" />}
       </div>
       <p className={styles.label}>{props.label}</p>
     </div>

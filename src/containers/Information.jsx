@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import Line from './Line';
-import Dropdown from "./fields/dropdown/Dropdown";
+import Dropdown from "../components/fields/dropdown/Dropdown";
 import { getDataLabels, getCountries } from "../helpers/dataHelper";
 import { getHistoric } from "../api/getHistoric";
 
