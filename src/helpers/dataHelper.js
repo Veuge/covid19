@@ -14,9 +14,19 @@ const capitalize = string =>
     .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
     .join(' ');
 
+const getCountryFromId = (countries, id) => countries.find(o => o.id === id);
+
+const getCountriesFromIds = (countries, ids) => {
+  return ids.map(id => {
+    const selectedCountry = getCountryFromId(countries, id);
+    return selectedCountry || null;
+  });
+}
+
 export {
   getDataLabels,
   getData,
   getCountries,
-  capitalize
+  capitalize,
+  getCountriesFromIds
 }

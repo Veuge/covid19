@@ -32,7 +32,7 @@ const LineChart = props => {
   }
 
   return (
-    <div style={{ paddingBottom: 20 }}>
+    <div style={{ padding: 20 }}>
       <h2 className="Text">{props.country}</h2>
       <Line
         data={data}
