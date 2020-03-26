@@ -1,7 +1,8 @@
 import axios from "axios";
 import { capitalize } from "../helpers/dataHelper";
 
-const URL = "https://corona.lmao.ninja/historical";
+// const URL = "https://corona.lmao.ninja/historical";
+const URL = "https://corona.lmao.ninja/v2/historical";
 
 const getHistoric = () => axios.get(URL, {
   transformResponse: [(data) => {
