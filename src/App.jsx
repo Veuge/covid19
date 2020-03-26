@@ -1,9 +1,23 @@
 import React, { Component } from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from "react-router-dom";
 
-import Header from "./components/Header";
-import Footer from "./components/Footer";
 import Information from "./containers/Information";
-import classes from "./App.module.scss";
+import MoreDetails from "./containers/MoreDetails";
+
+export const ROUTES = {
+  MORE_DETAILS: {
+    path: "/mas-detalles",
+    component: MoreDetails
+  },
+  HOME: {
+    path: "/",
+    component: Information
+  }
+}
 
 class App extends Component {
   height = window.innerHeight;
@@ -16,13 +30,22 @@ class App extends Component {
 
   render() {
     return (
-      <>
-        <Header />
-        <section className={`${classes.infoContainer} is-large`}>
-          <Information viewport={{ w: this.width, h: this.h }} />
-        </section>
-        <Footer />
-      </>
+      <Router>
+        <Switch>
+          <Route
+            path={ROUTES.MORE_DETAILS.path}
+            component={ROUTES.MORE_DETAILS.component}
+            name="more-details"
+          />
+          <Route
+            exact
+            path={ROUTES.HOME.path}
+            component={() => (
+              <ROUTES.HOME.component viewport={{ w: this.width, h: this.h }} />
+            )}
+          />
+        </Switch>
+      </Router>
     );
   }
 }

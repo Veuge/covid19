@@ -1,9 +1,15 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 import Line from './Line';
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 import Dropdown from "../components/fields/dropdown/Dropdown";
-import { getDataLabels, getCountries } from "../helpers/dataHelper";
-import { getHistoric } from "../api/getHistoric";
+import MainContentWrapper from "../components/main-content-wrapper/MainContentWrapper";
+
+import { ROUTES } from "../App";
+import { getHistoricDev } from "../api/getHistoric";
+import { getDataLabels, getCountries, getCountriesFromIds } from "../helpers/dataHelper";
 
 class Information extends Component {
   state = {
@@ -16,7 +22,7 @@ class Information extends Component {
   };
 
   componentDidMount() {
-    getHistoric()
+    getHistoricDev()
       .then(response => {
         this.setState({
           loading: false,
@@ -72,11 +78,28 @@ class Information extends Component {
             onClearAll={this.onClear}
           />
           {!!currentHistorics.length && (
-            <Line
-              labels={getDataLabels(currentHistorics[0].timeline.cases)}
-              selectedHistorics={currentHistorics}
-              viewport={this.props.viewport}
-            />
+            <>
+              <Line
+                labels={getDataLabels(currentHistorics[0].timeline.cases)}
+                selectedHistorics={currentHistorics}
+                viewport={this.props.viewport}
+              />
+              <div className="box">
+                <h2 className="is-size-3 has-text-centered">Ver más detalles</h2>
+                <ul>
+                  {getCountriesFromIds(countries, currentCountryIds).map(c => (
+                    <li key={`country-${c.id}`}>
+                      <Link to={{
+                        pathname: ROUTES.MORE_DETAILS.path,
+                        country: currentHistorics.find(h => h.id === c.id)
+                      }}>
+                        {c.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </>
           )}
         </div>
     );
@@ -84,7 +107,15 @@ class Information extends Component {
 
   renderBody = () => {
     const { loading } = this.state;
-    return loading ? this.renderLoader() : this.renderContent()
+    return (
+      <>
+        <Header />
+        <MainContentWrapper>
+          {loading ? this.renderLoader() : this.renderContent()}
+        </MainContentWrapper>
+        <Footer />
+      </>
+    )
   }
 
   render() {

@@ -1,0 +1,12 @@
+.mainContentContainer {
+  flex: 1;
+  padding: 20px;
+}
+
+// Large devices
+@media (min-width: 992px) and (max-width: 1199px) {
+  .mainContentContainer {
+    max-width: 70%;
+    align-self: center;
+  }
+}
