@@ -1,3 +1,5 @@
+import uniqBy from "lodash/uniqBy";
+
 const getDataLabels = timeline => Object.keys(timeline);
 
 const getData = timeline => Object.values(timeline);
@@ -8,12 +10,6 @@ const getCountries = historic => historic.map(hist => ({
   province: hist.province
 }));
 
-const capitalize = string => 
-  string.toLowerCase()
-    .split(' ')
-    .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-    .join(' ');
-
 const getCountryFromId = (countries, id) => countries.find(o => o.id === id);
 
 const getCountriesFromIds = (countries, ids) => {
@@ -23,10 +19,15 @@ const getCountriesFromIds = (countries, ids) => {
   });
 }
 
+const getUniqueCountriesFromIds = (countries, ids) => {
+  const newC = getCountriesFromIds(countries, ids);
+  return uniqBy(newC, "name");
+}
+
 export {
   getDataLabels,
   getData,
   getCountries,
-  capitalize,
-  getCountriesFromIds
+  getCountriesFromIds,
+  getUniqueCountriesFromIds
 }
