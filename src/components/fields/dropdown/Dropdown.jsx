@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 
 import Checkbox from "../checkbox/Checkbox";
 import { getCountriesFromIds } from "../../../helpers/dataHelper";
+import { getCountryProvinceConcat } from "../../../helpers/stringHelper";
 import styles from "./dropdown.module.scss";
 
 const Dropdown = props => {
@@ -26,9 +27,16 @@ const Dropdown = props => {
     onFilter(filtered);
   }
 
+  const onSelectOptions = op => {
+    props.onSelectOptions(op);
+    if(props.selectedValues.length === 4) {
+      toggleDropdown(false);
+    }
+  }
+
   const getSelectedValues = () => {
     return getCountriesFromIds(props.options, props.selectedValues)
-      .map(c => c.name);
+      .map(c => getCountryProvinceConcat(c.name, c.province));
   }
 
   const renderTrigger = () => (
@@ -76,8 +84,8 @@ const Dropdown = props => {
       {filteredOptions.map(op => (
         <div className={styles.checkbox} key={`check-${op.id}`}>
           <Checkbox
-            label={op.name}
-            onCheck={() => props.onSelectOptions(op)}
+            label={getCountryProvinceConcat(op.name, op.province)}
+            onCheck={() => onSelectOptions(op)}
             checked={props.selectedValues.includes(op.id)}
             disabled={props.selectedValues.length >= 5}
           />

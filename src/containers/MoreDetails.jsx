@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
+import classes from "./more-details.module.scss";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Box from "../components/Box";
@@ -16,12 +17,10 @@ class MoreDetails extends Component {
   }
 
   componentDidMount() {
-    console.log("MoreDetails > componentDidMount", this.props);
     if (this.props.location.country) {
       this.setState({ loading: true });
       getByCountry(this.props.location.country.name)
         .then(response => {
-          console.log("MoreDetails > componentDidMount", response.data);
           this.setState({
             stats: response.data,
             loading: false
@@ -47,18 +46,31 @@ class MoreDetails extends Component {
     const { location } = this.props;
 
     return location.country && !!stats && (
-      <>
+      <div className={classes.moreDetailsContainer}>
         <Link to={ROUTES.HOME.path}>Regresar</Link>
-        <h3 className="is-size-4 has-text-centered">
+        <h3 className="title is-size-3 has-text-centered">
           {location.country.name}
         </h3>
-        <Box title="Casos confirmados" number={stats.cases} cls="has-text-link" />
-        <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-evenly" }}>
+        {this.renderCards()}
+      </div>
+    )
+  }
+
+  renderCards = () => {
+    const { stats } = this.state;
+    return (
+      <div className="columns">
+        <div className="column">
+          <Box title="Casos confirmados" number={stats.cases} cls="has-text-link" />
+        </div>
+        <div className="column">
           <Box title="Decesos" number={stats.deaths} cls="has-text-danger" />
+        </div>
+        <div className="column">
           <Box title="Recuperados" number={stats.recovered} cls="has-text-success" />
         </div>
-      </>
-    )
+      </div>
+    );
   }
 
   renderError = () => {

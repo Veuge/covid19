@@ -3,12 +3,13 @@ import { Line } from 'react-chartjs-2';
 import { chartColors } from "../helpers/chartColorsHelper";
 import { getData } from '../helpers/dataHelper';
 import * as SIZE_HELPER from "../helpers/responsiveHelper"
+import { getCountryProvinceConcat } from '../helpers/stringHelper';
 
 const LineChart = props => {
   const data = {
     labels: props.labels,
     datasets: props.selectedHistorics.map((sh, i) => ({
-      label: sh.name,
+      label: getCountryProvinceConcat(sh.name, sh.province),
       fill: false,
       backgroundColor: chartColors[i].backgroundColor,
       borderColor: chartColors[i].borderColor,
