@@ -1,9 +1,15 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 import Line from './Line';
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 import Dropdown from "../components/fields/dropdown/Dropdown";
-import { getDataLabels, getCountries } from "../helpers/dataHelper";
+import MainContentWrapper from "../components/main-content-wrapper/MainContentWrapper";
+
+import { ROUTES } from "../App";
 import { getHistoric } from "../api/getHistoric";
+import { getDataLabels, getCountries, getUniqueCountriesFromIds } from "../helpers/dataHelper";
 
 class Information extends Component {
   state = {
@@ -11,8 +17,7 @@ class Information extends Component {
     historic: null,
     countries: [],
     currentCountryIds: [],
-    currentHistorics: [],
-    checked: false
+    currentHistorics: []
   };
 
   componentDidMount() {
@@ -63,6 +68,8 @@ class Information extends Component {
 
   renderContent = () => {
     const { currentCountryIds, countries, currentHistorics } = this.state;
+    const selectedCountries = getUniqueCountriesFromIds(countries, currentCountryIds);
+    
     return (
         <div className="container">
           <Dropdown
@@ -72,11 +79,28 @@ class Information extends Component {
             onClearAll={this.onClear}
           />
           {!!currentHistorics.length && (
-            <Line
-              labels={getDataLabels(currentHistorics[0].timeline.cases)}
-              selectedHistorics={currentHistorics}
-              viewport={this.props.viewport}
-            />
+            <>
+              <Line
+                labels={getDataLabels(currentHistorics[0].timeline.cases)}
+                selectedHistorics={currentHistorics}
+                viewport={this.props.viewport}
+              />
+              <div className="box">
+                <h2 className="is-size-3 has-text-centered">Ver más detalles</h2>
+                <div className="tags are-medium" style={{ marginTop: 20 }}>
+                  {selectedCountries.map(c => (
+                    <span className="tag" key={`country-${c.id}`}>
+                      <Link key={`country-${c.id}`} to={{
+                        pathname: ROUTES.MORE_DETAILS.path,
+                        country: currentHistorics.find(h => h.id === c.id)
+                      }}>
+                        {c.name}
+                      </Link>
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </>
           )}
         </div>
     );
@@ -84,7 +108,15 @@ class Information extends Component {
 
   renderBody = () => {
     const { loading } = this.state;
-    return loading ? this.renderLoader() : this.renderContent()
+    return (
+      <>
+        <Header />
+        <MainContentWrapper>
+          {loading ? this.renderLoader() : this.renderContent()}
+        </MainContentWrapper>
+        <Footer />
+      </>
+    )
   }
 
   render() {

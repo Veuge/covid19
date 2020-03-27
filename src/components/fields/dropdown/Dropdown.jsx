@@ -3,6 +3,8 @@ import { MdKeyboardArrowDown, MdKeyboardArrowUp, MdClear } from "react-icons/md"
 import PropTypes from "prop-types";
 
 import Checkbox from "../checkbox/Checkbox";
+import { getCountriesFromIds } from "../../../helpers/dataHelper";
+import { getCountryProvinceConcat } from "../../../helpers/stringHelper";
 import styles from "./dropdown.module.scss";
 
 const Dropdown = props => {
@@ -25,15 +27,24 @@ const Dropdown = props => {
     onFilter(filtered);
   }
 
+  const onSelectOptions = op => {
+    props.onSelectOptions(op);
+    if(props.selectedValues.length === 4) {
+      toggleDropdown(false);
+    }
+  }
+
   const getSelectedValues = () => {
-    return props.selectedValues.map(sv => {
-      const selectedCountry = props.options.find(o => o.id === sv);
-      return !!selectedCountry ? selectedCountry.name : "";
-    });
+    return getCountriesFromIds(props.options, props.selectedValues)
+      .map(c => getCountryProvinceConcat(c.name, c.province));
   }
 
   const renderTrigger = () => (
-    <div tabIndex={0} className={styles.triggerBox} onClick={() => toggleDropdown(!isOpen)}>
+    <div
+      tabIndex={0}
+      className={styles.triggerBox}
+      onClick={() => toggleDropdown(!isOpen)}
+    >
       <p className={styles.selectedValues}>{getSelectedValues().join(", ")}</p>
       {isOpen ? (
         <MdKeyboardArrowUp color="#3298dc" />
@@ -73,8 +84,8 @@ const Dropdown = props => {
       {filteredOptions.map(op => (
         <div className={styles.checkbox} key={`check-${op.id}`}>
           <Checkbox
-            label={op.name}
-            onCheck={() => props.onSelectOptions(op)}
+            label={getCountryProvinceConcat(op.name, op.province)}
+            onCheck={() => onSelectOptions(op)}
             checked={props.selectedValues.includes(op.id)}
             disabled={props.selectedValues.length >= 5}
           />
@@ -94,6 +105,7 @@ const Dropdown = props => {
 
   return (
     <div className={styles.container}>
+      <p className="label">Seleccione países</p>
       {renderTrigger()}
       {renderOptionsBox()}
     </div>
