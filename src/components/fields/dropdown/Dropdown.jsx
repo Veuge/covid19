@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp, MdClear } from "react-icons/md";
 import PropTypes from "prop-types";
 
@@ -11,6 +11,13 @@ const Dropdown = props => {
   const [ isOpen, open ] = useState(false);
   const [ searchTerm, search ] = useState("");
   const [ filteredOptions, onFilter ] = useState(props.options);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      inputRef.current.focus();
+    }
+  }, [isOpen]);
 
   const toggleDropdown = newIsOpen => {
     open(newIsOpen);
@@ -58,6 +65,7 @@ const Dropdown = props => {
     return (
       <div className={styles.actionsContainer} style={{ display: "flex" }}>
         <input
+          ref={inputRef}
           className={`input is-info is-small ${styles.searchInput}`}
           type="text"
           onChange={onSearch}
