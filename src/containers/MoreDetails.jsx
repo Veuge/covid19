@@ -17,6 +17,8 @@ class MoreDetails extends Component {
   }
 
   componentDidMount() {
+    window.scrollTo(0, 0);
+
     if (this.props.location.country) {
       this.setState({ loading: true });
       getByCountry(this.props.location.country.name)
