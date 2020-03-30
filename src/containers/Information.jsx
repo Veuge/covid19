@@ -27,7 +27,9 @@ class Information extends Component {
           loading: false,
           historic: response.data,
           countries: getCountries(response.data)
-        })
+        }, () => {
+          console.log({state: this.state});
+        });
       })
   }
 
@@ -94,7 +96,7 @@ class Information extends Component {
                         pathname: ROUTES.MORE_DETAILS.path,
                         country: currentHistorics.find(h => h.id === c.id)
                       }}>
-                        {c.name}
+                        {c.nameInSpanish}
                       </Link>
                     </span>
                   ))}

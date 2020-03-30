@@ -25,9 +25,13 @@ const Dropdown = props => {
 
   const onSearch = e => {
     const searchVal = e.target.value;
+    const filterList = op => 
+      op.nameInSpanish.toLowerCase().includes(searchVal.toLowerCase()) || 
+      (!!op.province && op.province.toLowerCase().includes(searchVal.toLowerCase()));
+
     const filtered = searchVal === "" 
       ? props.options 
-      : props.options.filter(op => op.name.toLowerCase().includes(searchVal.toLowerCase()) || (!!op.province && op.province.toLowerCase().includes(searchVal.toLowerCase())));
+      : props.options.filter(filterList);
 
     // update state
     search(searchVal);
@@ -43,7 +47,7 @@ const Dropdown = props => {
 
   const getSelectedValues = () => {
     return getCountriesFromIds(props.options, props.selectedValues)
-      .map(c => getCountryProvinceConcat(c.name, c.province));
+      .map(c => getCountryProvinceConcat(c.nameInSpanish, c.province));
   }
 
   const renderTrigger = () => (
@@ -92,7 +96,7 @@ const Dropdown = props => {
       {filteredOptions.map(op => (
         <div className={styles.checkbox} key={`check-${op.id}`}>
           <Checkbox
-            label={getCountryProvinceConcat(op.name, op.province)}
+            label={getCountryProvinceConcat(op.nameInSpanish, op.province)}
             onCheck={() => onSelectOptions(op)}
             checked={props.selectedValues.includes(op.id)}
             disabled={props.selectedValues.length >= 5}

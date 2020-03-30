@@ -7,6 +7,7 @@ const getData = timeline => Object.values(timeline);
 const getCountries = historic => historic.map(hist => ({
   id: hist.id,
   name: hist.name,
+  nameInSpanish: hist.nameInSpanish,
   province: hist.province
 }));
 
@@ -21,7 +22,7 @@ const getCountriesFromIds = (countries, ids) => {
 
 const getUniqueCountriesFromIds = (countries, ids) => {
   const newC = getCountriesFromIds(countries, ids);
-  return uniqBy(newC, "name");
+  return uniqBy(newC, "nameInSpanish");
 }
 
 export {
