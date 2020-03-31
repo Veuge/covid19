@@ -1,6 +1,7 @@
 import axios from "./axios";
 import { capitalize } from "../helpers/stringHelper";
 import data from "./historical.json";
+import { CountryTranslation } from "./countryTranslation";
 
 // const URL = "https://corona.lmao.ninja/historical";
 const URL = "/v2/historical";
@@ -8,11 +9,12 @@ const URL = "/v2/historical";
 const getHistoric = () => axios.get(URL, {
   transformResponse: [(data) => {
     const parsedData = JSON.parse(data);
-    return parsedData.map((country, i) => ({
+    return parsedData.map((c, i) => ({
       id: `country-${i}`,
-      name: capitalize(country.country),
-      province: !!country.province ? capitalize(country.province) : undefined,
-      timeline: country.timeline
+      name: capitalize(c.country),
+      nameInSpanish: CountryTranslation[c.country.toLowerCase()] || capitalize(c.country),
+      province: !!c.province ? capitalize(c.province) : undefined,
+      timeline: c.timeline
     })).sort((a, b) => {
       const nameA = a.name.toUpperCase();
       const nameB = b.name.toUpperCase();
@@ -25,11 +27,12 @@ const getHistoric = () => axios.get(URL, {
 
 const getHistoricDev = () => new Promise((res) => {
   const x = {};
-  x.data = data.map((country, i) => ({
+  x.data = data.map((c, i) => ({
     id: `country-${i}`,
-    name: capitalize(country.country),
-    province: !!country.province ? capitalize(country.province) : undefined,
-    timeline: country.timeline
+    name: capitalize(c.country),
+    nameInSpanish: CountryTranslation[c.country.toLowerCase()] || capitalize(c.country),
+    province: !!c.province ? capitalize(c.province) : undefined,
+    timeline: c.timeline
   })).sort((a, b) => {
     const nameA = a.name.toUpperCase();
     const nameB = b.name.toUpperCase();

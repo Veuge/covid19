@@ -17,6 +17,8 @@ class MoreDetails extends Component {
   }
 
   componentDidMount() {
+    window.scrollTo(0, 0);
+
     if (this.props.location.country) {
       this.setState({ loading: true });
       getByCountry(this.props.location.country.name)
@@ -49,7 +51,7 @@ class MoreDetails extends Component {
       <div className={classes.moreDetailsContainer}>
         <Link to={ROUTES.HOME.path}>Regresar</Link>
         <h3 className="title is-size-3 has-text-centered">
-          {location.country.name}
+          {location.country.nameInSpanish}
         </h3>
         {this.renderCards()}
       </div>

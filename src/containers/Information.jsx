@@ -9,7 +9,11 @@ import MainContentWrapper from "../components/main-content-wrapper/MainContentWr
 
 import { ROUTES } from "../App";
 import { getHistoric } from "../api/getHistoric";
-import { getDataLabels, getCountries, getUniqueCountriesFromIds } from "../helpers/dataHelper";
+import {
+  getDataLabels,
+  getCountries,
+  getUniqueCountriesFromIds
+} from "../helpers/dataHelper";
 
 class Information extends Component {
   state = {
@@ -27,7 +31,9 @@ class Information extends Component {
           loading: false,
           historic: response.data,
           countries: getCountries(response.data)
-        })
+        }, () => {
+          console.log({state: this.state});
+        });
       })
   }
 
@@ -66,9 +72,46 @@ class Information extends Component {
     <p className="Text">Cargando...</p>
   );
 
+  renderChart = () => {
+    const { currentHistorics } = this.state;
+    const { viewport } = this.props;
+    const labels = getDataLabels(currentHistorics[0].timeline.cases);
+    return (
+      <Line
+        labels={labels}
+        selectedHistorics={currentHistorics}
+        viewport={viewport}
+      />
+    )
+  };
+
+  renderViewMore = () => {
+    const { countries, currentHistorics, currentCountryIds } = this.state;
+    const selectedCountries = getUniqueCountriesFromIds(countries, currentCountryIds);
+
+    return (
+      <div className="box">
+        <h2 className="is-size-3 has-text-centered">Ver más detalles</h2>
+        <div className="tags are-medium" style={{ marginTop: 20 }}>
+          {selectedCountries.map(c => (
+            <span className="tag" key={`country-${c.id}`}>
+              <Link
+                to={{
+                  pathname: ROUTES.MORE_DETAILS.path,
+                  country: currentHistorics.find(h => h.id === c.id)
+                }}
+              >
+                {c.nameInSpanish}
+              </Link>
+            </span>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
   renderContent = () => {
     const { currentCountryIds, countries, currentHistorics } = this.state;
-    const selectedCountries = getUniqueCountriesFromIds(countries, currentCountryIds);
     
     return (
         <div className="container">
@@ -80,26 +123,8 @@ class Information extends Component {
           />
           {!!currentHistorics.length && (
             <>
-              <Line
-                labels={getDataLabels(currentHistorics[0].timeline.cases)}
-                selectedHistorics={currentHistorics}
-                viewport={this.props.viewport}
-              />
-              <div className="box">
-                <h2 className="is-size-3 has-text-centered">Ver más detalles</h2>
-                <div className="tags are-medium" style={{ marginTop: 20 }}>
-                  {selectedCountries.map(c => (
-                    <span className="tag" key={`country-${c.id}`}>
-                      <Link key={`country-${c.id}`} to={{
-                        pathname: ROUTES.MORE_DETAILS.path,
-                        country: currentHistorics.find(h => h.id === c.id)
-                      }}>
-                        {c.name}
-                      </Link>
-                    </span>
-                  ))}
-                </div>
-              </div>
+              {this.renderChart()}
+              {this.renderViewMore()}
             </>
           )}
         </div>

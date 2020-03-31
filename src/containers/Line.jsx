@@ -9,7 +9,7 @@ const LineChart = props => {
   const data = {
     labels: props.labels,
     datasets: props.selectedHistorics.map((sh, i) => ({
-      label: getCountryProvinceConcat(sh.name, sh.province),
+      label: getCountryProvinceConcat(sh.nameInSpanish, sh.province),
       fill: false,
       backgroundColor: chartColors[i].backgroundColor,
       borderColor: chartColors[i].borderColor,

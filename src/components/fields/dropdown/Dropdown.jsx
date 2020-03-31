@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp, MdClear } from "react-icons/md";
 import PropTypes from "prop-types";
 
@@ -11,6 +11,13 @@ const Dropdown = props => {
   const [ isOpen, open ] = useState(false);
   const [ searchTerm, search ] = useState("");
   const [ filteredOptions, onFilter ] = useState(props.options);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      inputRef.current.focus();
+    }
+  }, [isOpen]);
 
   const toggleDropdown = newIsOpen => {
     open(newIsOpen);
@@ -18,9 +25,13 @@ const Dropdown = props => {
 
   const onSearch = e => {
     const searchVal = e.target.value;
+    const filterList = op => 
+      op.nameInSpanish.toLowerCase().includes(searchVal.toLowerCase()) || 
+      (!!op.province && op.province.toLowerCase().includes(searchVal.toLowerCase()));
+
     const filtered = searchVal === "" 
       ? props.options 
-      : props.options.filter(op => op.name.toLowerCase().includes(searchVal.toLowerCase()) || (!!op.province && op.province.toLowerCase().includes(searchVal.toLowerCase())));
+      : props.options.filter(filterList);
 
     // update state
     search(searchVal);
@@ -36,7 +47,7 @@ const Dropdown = props => {
 
   const getSelectedValues = () => {
     return getCountriesFromIds(props.options, props.selectedValues)
-      .map(c => getCountryProvinceConcat(c.name, c.province));
+      .map(c => getCountryProvinceConcat(c.nameInSpanish, c.province));
   }
 
   const renderTrigger = () => (
@@ -58,6 +69,7 @@ const Dropdown = props => {
     return (
       <div className={styles.actionsContainer} style={{ display: "flex" }}>
         <input
+          ref={inputRef}
           className={`input is-info is-small ${styles.searchInput}`}
           type="text"
           onChange={onSearch}
@@ -84,7 +96,7 @@ const Dropdown = props => {
       {filteredOptions.map(op => (
         <div className={styles.checkbox} key={`check-${op.id}`}>
           <Checkbox
-            label={getCountryProvinceConcat(op.name, op.province)}
+            label={getCountryProvinceConcat(op.nameInSpanish, op.province)}
             onCheck={() => onSelectOptions(op)}
             checked={props.selectedValues.includes(op.id)}
             disabled={props.selectedValues.length >= 5}
