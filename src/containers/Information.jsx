@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Line from './Line';
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import Loader from "../components/loader/Loader";
 import Dropdown from "../components/fields/dropdown/Dropdown";
 import MainContentWrapper from "../components/main-content-wrapper/MainContentWrapper";
 
@@ -69,7 +70,7 @@ class Information extends Component {
   };
 
   renderLoader = () => (
-    <p className="Text">Cargando...</p>
+    <Loader color="blue" />
   );
 
   renderChart = () => {

@@ -1,13 +1,7 @@
-.App {
-  box-sizing: border-box;
+.appContainer {
   display: flex;
   flex-direction: column;
-  padding: 20px;
-  align-items: center;
-  flex: 1;
-  height: 100vh;
-  min-width: 90vw;
-
+  min-height: 100vh;
 }
 
 // Extra small devices

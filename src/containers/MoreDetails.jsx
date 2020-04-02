@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-import classes from "./more-details.module.scss";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Box from "../components/Box";
+import Loader from "../components/loader/Loader";
 import MainContentWrapper from "../components/main-content-wrapper/MainContentWrapper";
 
 import { ROUTES } from "../App";
@@ -39,7 +39,7 @@ class MoreDetails extends Component {
   renderLoader = () => {
     const { loading } = this.state;
     return loading && (
-      <p className="Text">Cargando...</p>
+      <Loader color="green" />
     );
   }
 
@@ -48,7 +48,7 @@ class MoreDetails extends Component {
     const { location } = this.props;
 
     return location.country && !!stats && (
-      <div className={classes.moreDetailsContainer}>
+      <div>
         <Link to={ROUTES.HOME.path}>Regresar</Link>
         <h3 className="title is-size-3 has-text-centered">
           {location.country.nameInSpanish}
