@@ -1,9 +1,14 @@
 import React from "react";
-import classes from "./mainContentWrapper.module.scss";
 
 const MainContentWrapper = ({ children }) => (
-  <section className={`${classes.mainContentContainer} is-large`}>
-    {children}
+  <section className="section" style={{ flex: 1 }}>
+    <div className="columns">
+      <div className="column" />
+      <div className="column is-10">
+        {children}
+      </div>
+      <div className="column" />
+    </div>
   </section>
 );
 
