@@ -1,6 +1,6 @@
 import axios from "./axios";
 
-const URL = "/countries";
+const URL = "/v2/countries";
 
 const getByCountry = countryName => axios.get(`${URL}/${countryName}`, {
   transformResponse: [(data) => {
