@@ -4,9 +4,10 @@ import data from "./historical.json";
 import { CountryTranslation } from "./countryTranslation";
 
 // const URL = "https://corona.lmao.ninja/historical";
-const URL = "/v2/historical";
+const URL = "/v3/covid-19/historical";
 
 const getHistoric = () => axios.get(URL, {
+  params: { lastdays: "all" },
   transformResponse: [(data) => {
     const parsedData = JSON.parse(data);
     return parsedData.map((c, i) => ({

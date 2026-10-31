@@ -37,7 +37,13 @@ const LineChart = props => {
       <h2 className="Text">{props.country}</h2>
       <Line
         data={data}
-        options={{ maintainAspectRatio: false }}
+        options={{
+          maintainAspectRatio: false,
+          title: {
+            display: true,
+            text: "Casos confirmados acumulados"
+          }
+        }}
         width={getChartSize().width}
         height={getChartSize().height}
       />
