@@ -30,6 +30,7 @@ class App extends Component {
   }
 
   render() {
+    const Home = ROUTES.HOME.component;
     return (
       <main className={classes.appContainer}>
         <Router>
@@ -43,7 +44,7 @@ class App extends Component {
               exact
               path={ROUTES.HOME.path}
               component={() => (
-                <ROUTES.HOME.component viewport={{ w: this.width, h: this.h }} />
+                <Home viewport={{ w: this.width, h: this.h }} />
               )}
             />
           </Switch>
